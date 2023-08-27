@@ -4,7 +4,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { fetchImages } from './pixaby-api';
 import { throttle } from 'lodash';
 
-
 const gallery = document.querySelector('.gallery');
 const form = document.querySelector('.search-form');
 const btn = document.querySelector('#button');
@@ -19,32 +18,28 @@ const refs = {
   page: 1,
   totalPages: 0,
   LIMIT: 40,
-  SCROLL_THROTTLE_INTERVAL: 300
+  SCROLL_THROTTLE_INTERVAL: 300,
 };
 
-let endOfPageNotified = false; 
+let endOfPageNotified = false;
 
 const lightbox = new SimpleLightbox('.gallery a'); // lightbox gallery
-
 
 form.addEventListener('submit', handleSubmit);
 
 btn.addEventListener('click', handleClick);
 
-
 async function handleSubmit(e) {
   e.preventDefault();
-  
-    refs.page = 1;
-    refs.totalPages = 0;
-    endOfPageNotified = false; 
-    //---------------------------------------------------------
 
-    gallery.textContent = ''; // clear markup of the gallery container
+  refs.page = 1;
+  refs.totalPages = 0;
+  endOfPageNotified = false;
+  //---------------------------------------------------------
 
-  let query = form.searchQuery.value.trim(); 
+  gallery.textContent = ''; // clear markup of the gallery container
 
- 
+  let query = form.searchQuery.value.trim();
 
   if (query === '') {
     // check for empty value
@@ -54,7 +49,7 @@ async function handleSubmit(e) {
 
   try {
     const result = await fetchImages(query, refs.page, refs.LIMIT); // fetch data from pixaby-api
-     
+
     if (result.hits.length === 0) {
       //Check for empty data
       return Notiflix.Notify.warning(refs.failureMessage);
@@ -120,52 +115,50 @@ function renderMarkup(images) {
 }
 //----------------------------------------------
 
-
-const scrollHandler = throttle((e) => {
-
-
+const scrollHandler = throttle(e => {
   handleButtonVisibility(); // Calling the handle visiblity "to top" button
   loadMoreHandler(e);
+}, refs.SCROLL_THROTTLE_INTERVAL);
 
-},refs.SCROLL_THROTTLE_INTERVAL);
+window.addEventListener('scroll', scrollHandler);
 
-window.addEventListener('scroll',scrollHandler);
-
- // Infinity scroll
+// Infinity scroll
 
 function limitNotify() {
-  
+  let distanceToBottom =
+    document.documentElement.scrollHeight -
+    (window.innerHeight + window.scrollY);
 
-  let distanceToBottom = document.documentElement.scrollHeight - (window.innerHeight + window.scrollY);
-
-   if(!endOfPageNotified && distanceToBottom < 200) {
+  if (!endOfPageNotified && distanceToBottom < 200) {
     Notiflix.Notify.info(refs.limitMessage);
     endOfPageNotified = true;
-   }
-
+  }
 }
 
-function loadMoreHandler () {
-    // Check if the user has reached the bottom of the page
+function loadMoreHandler() {
+  // Check if the user has reached the bottom of the page
 
-    const distanceToBottom = document.documentElement.scrollHeight - (window.innerHeight + window.scrollY);
-     console.log(`document.documentElement.scrollHeight: ${document.documentElement.scrollHeight}`);
-     console.log(`window.innerHeight: ${window.innerHeight}`);
-     console.log(`window.scrollY: ${window.scrollY}`);
-    if (distanceToBottom < 200) {
-     
-      if (refs.page < refs.totalPages) {
-        // Check if there are more pages to load
-        refs.page += 1;
+  const distanceToBottom =
+    document.documentElement.scrollHeight -
+    (window.innerHeight + window.scrollY);
+  console.log(
+    `document.documentElement.scrollHeight: ${document.documentElement.scrollHeight}`
+  );
+  console.log(`window.innerHeight: ${window.innerHeight}`);
+  console.log(`window.scrollY: ${window.scrollY}`);
+  if (distanceToBottom < 200) {
+    if (refs.page < refs.totalPages) {
+      // Check if there are more pages to load
+      refs.page += 1;
 
-        fetchAndRenderImages();
-      } else {
-        if (!endOfPageNotified) {
-          limitNotify();
-        }
+      fetchAndRenderImages();
+    } else {
+      if (!endOfPageNotified) {
+        limitNotify();
       }
     }
   }
+}
 
 async function fetchAndRenderImages() {
   try {
@@ -180,13 +173,9 @@ async function fetchAndRenderImages() {
   }
 }
 
-
 function handleButtonVisibility() {
-
   btn.classList.toggle('show', window.scrollY > 300);
 }
-
-
 
 function handleClick(e) {
   // Handle click on the "to top" button

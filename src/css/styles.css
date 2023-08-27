@@ -1,0 +1,152 @@
+body {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 100vh;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+.gallery {
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+.search-form input[type="text"] {
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+    max-width: 300px;
+    margin-right: 10px;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style the button on hover */
+.search-form button:hover {
+    background-color: #0056b3;
+}
+
+
+
+img {
+
+    display: block;
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+
+}
+
+p {
+
+    margin-bottom: 0;
+    margin-top: 3px;
+}
+
+.info {
+    padding-left: 5px;
+    padding-right: 5px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    vertical-align: center;
+}
+
+
+
+#button {
+    display: inline-block;
+    background-color: #007bff;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    justify-content: center;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    transition: background-color .3s,
+        opacity .5s, visibility .5s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+    border: none;
+}
+
+#button::after {
+    content: "\f077";
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2em;
+    line-height: -25px;
+    color: #fff;
+}
+
+#button:hover {
+    cursor: pointer;
+    background-color: #333;
+}
+
+#button:active {
+    background-color: #555;
+}
+
+#button.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.gallery {
+
+    color: #fff;
+
+    text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+
+.photo-card {
+
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover {
+
+    transform: scale3d(1.05, 1.05, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
